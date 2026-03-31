@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Browser Ops Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 2rem;
+      }
+      form {
+        display: grid;
+        gap: 0.75rem;
+        max-width: 22rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Browser Ops Demo</h1>
+    <form id="demo-form">
+      <label for="name">Name</label>
+      <input id="name" name="name" placeholder="Type your name">
+
+      <label for="role">Role</label>
+      <select id="role" name="role">
+        <option value="builder">Builder</option>
+        <option value="analyst">Analyst</option>
+      </select>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="result">Waiting</p>
+
+    <script>
+      document.getElementById("demo-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const role = document.getElementById("role").value;
+        document.getElementById("result").textContent = `Submitted ${name} as ${role}`;
+      });
+    </script>
+  </body>
+</html>
