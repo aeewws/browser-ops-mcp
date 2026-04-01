@@ -7,6 +7,7 @@ import {
   type CloseResult,
   type ExtractFormField,
   type ExtractLink,
+  type ExtractMode,
   type ExtractParams,
   type ExtractResult,
   type FillParams,
@@ -40,6 +41,7 @@ interface PageSnapshotPayload {
 }
 
 const DEFAULT_SESSION_ID = "default";
+const SUPPORTED_EXTRACT_MODES = new Set<ExtractMode>(["text", "markdown", "links", "forms"]);
 
 export class BrowserOpsError extends Error {
   constructor(
@@ -263,16 +265,17 @@ export class BrowserOpsService {
 
   async extract(params: ExtractParams): Promise<ExtractResult> {
     const session = this.requireSession(params.sessionId);
-    const extraction = await session.page.evaluate((mode) => {
+    const mode = normalizeExtractMode(params.mode);
+    const extraction = await session.page.evaluate((selectedMode) => {
       const normalize = (value: string | null | undefined) => value?.replace(/\s+/g, " ").trim() ?? "";
       const title = document.title;
       const url = window.location.href;
 
-      if (mode === "text") {
-        return { title, url, mode, content: document.body.innerText };
+      if (selectedMode === "text") {
+        return { title, url, mode: selectedMode, content: document.body.innerText };
       }
 
-      if (mode === "markdown") {
+      if (selectedMode === "markdown") {
         const lines: string[] = [];
         const nodes = Array.from(document.body.querySelectorAll("h1,h2,h3,h4,h5,h6,p,li,pre,blockquote"));
         for (const node of nodes) {
@@ -289,10 +292,10 @@ export class BrowserOpsService {
             lines.push(text);
           }
         }
-        return { title, url, mode, content: lines.join("\n\n") };
+        return { title, url, mode: selectedMode, content: lines.join("\n\n") };
       }
 
-      if (mode === "links") {
+      if (selectedMode === "links") {
         const links = Array.from(document.querySelectorAll("a[href]")).map((link) => ({
           text: normalize(link.textContent),
           href: (link as HTMLAnchorElement).href
@@ -300,7 +303,7 @@ export class BrowserOpsService {
         return {
           title,
           url,
-          mode,
+          mode: selectedMode,
           content: JSON.stringify(links, null, 2),
           links
         };
@@ -318,11 +321,11 @@ export class BrowserOpsService {
       return {
         title,
         url,
-        mode,
+        mode: selectedMode,
         content: JSON.stringify(forms, null, 2),
         forms
       };
-    }, params.mode) as {
+    }, mode) as {
       title: string;
       url: string;
       mode: ExtractParams["mode"];
@@ -407,4 +410,15 @@ export class BrowserOpsService {
   private selectorForRef(ref: string): string {
     return `[data-browser-ops-ref="${ref}"]`;
   }
+}
+
+function normalizeExtractMode(mode: string): ExtractMode {
+  if (SUPPORTED_EXTRACT_MODES.has(mode as ExtractMode)) {
+    return mode as ExtractMode;
+  }
+
+  throw new BrowserOpsError(
+    "INVALID_EXTRACT_MODE",
+    `Unsupported extract mode '${mode}'. Use text, markdown, links, or forms.`
+  );
 }

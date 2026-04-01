@@ -1,0 +1,29 @@
+{
+  "sessionId": "asset-demo",
+  "snapshotId": "snap_e9ecde3241ad",
+  "url": "file:///C:/Users/40436/Desktop/browser-ops-mcp/tests/fixtures/demo.html",
+  "title": "Browser Ops Demo",
+  "elements": [
+    {
+      "ref": "r1",
+      "role": "textbox",
+      "name": "Name",
+      "disabled": false
+    },
+    {
+      "ref": "r2",
+      "role": "combobox",
+      "name": "Role",
+      "text": "Builder Analyst",
+      "value": "builder",
+      "disabled": false
+    },
+    {
+      "ref": "r3",
+      "role": "button",
+      "name": "Submit",
+      "text": "Submit",
+      "disabled": false
+    }
+  ]
+}

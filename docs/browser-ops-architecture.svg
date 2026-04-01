@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">browser-ops-mcp architecture</title>
+  <desc id="desc">CLI and MCP both connect to a local daemon that controls Playwright and exposes snapshot, extract, screenshot, click, fill, select, and wait actions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08111f"/>
+      <stop offset="55%" stop-color="#111c30"/>
+      <stop offset="100%" stop-color="#17233a"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2740"/>
+      <stop offset="100%" stop-color="#203252"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 z" fill="#8fb6ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="760" fill="url(#bg)"/>
+  <circle cx="1210" cy="110" r="170" fill="#0f2b4a" opacity="0.28"/>
+  <circle cx="180" cy="640" r="220" fill="#13344f" opacity="0.24"/>
+  <circle cx="720" cy="80" r="110" fill="#2dd4bf" opacity="0.12"/>
+
+  <text x="80" y="84" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="40" font-weight="700">browser-ops-mcp</text>
+  <text x="80" y="122" fill="#b8c7e0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18">One local daemon, two front doors, one snapshot contract.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="180" width="250" height="150" rx="24" fill="url(#card)" stroke="#4f74a6" stroke-width="1.2"/>
+    <text x="205" y="236" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">CLI</text>
+    <text x="205" y="270" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">open / snapshot / click / fill</text>
+    <text x="205" y="296" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">extract / screenshot / wait</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="390" width="250" height="150" rx="24" fill="url(#card)" stroke="#4f74a6" stroke-width="1.2"/>
+    <text x="205" y="446" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">MCP</text>
+    <text x="205" y="480" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">open_page / snapshot_page</text>
+    <text x="205" y="506" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">tool API for agents</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="430" y="245" width="340" height="240" rx="30" fill="#10253e" stroke="#72c7ff" stroke-width="1.5"/>
+    <rect x="462" y="277" width="276" height="40" rx="12" fill="#183458"/>
+    <text x="600" y="303" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Local daemon</text>
+    <text x="600" y="350" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">session state + snapshot invalidation</text>
+    <text x="600" y="378" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">structured errors + stable refs</text>
+    <rect x="462" y="396" width="276" height="42" rx="12" fill="url(#accent)" opacity="0.18"/>
+    <text x="600" y="423" text-anchor="middle" fill="#dff8ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">snapshotId + ref is the contract</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="840" y="164" width="250" height="150" rx="24" fill="url(#card)" stroke="#4f74a6" stroke-width="1.2"/>
+    <text x="965" y="220" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Playwright</text>
+    <text x="965" y="254" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">browser + page lifecycle</text>
+    <text x="965" y="280" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">real DOM, real screenshots</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="840" y="406" width="250" height="150" rx="24" fill="url(#card)" stroke="#4f74a6" stroke-width="1.2"/>
+    <text x="965" y="462" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Browser</text>
+    <text x="965" y="496" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">open, interact, mutate</text>
+    <text x="965" y="522" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">state changes invalidate refs</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1120" y="248" width="200" height="112" rx="22" fill="#17324f" stroke="#67e8f9" stroke-width="1.2"/>
+    <text x="1220" y="294" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">snapshot</text>
+    <text x="1220" y="320" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">accessibility refs</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1120" y="388" width="200" height="112" rx="22" fill="#17324f" stroke="#67e8f9" stroke-width="1.2"/>
+    <text x="1220" y="434" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">extract</text>
+    <text x="1220" y="460" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">text / markdown / links / forms</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1120" y="528" width="200" height="112" rx="22" fill="#17324f" stroke="#67e8f9" stroke-width="1.2"/>
+    <text x="1220" y="574" text-anchor="middle" fill="#eef6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">screenshot</text>
+    <text x="1220" y="600" text-anchor="middle" fill="#c6d4ea" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">artifact saved to disk</text>
+  </g>
+
+  <path d="M330 255 C380 255, 395 255, 430 285" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M330 465 C380 465, 395 465, 430 395" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M770 305 C805 305, 815 285, 840 250" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M770 425 C805 425, 815 445, 840 480" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1090 238 C1110 238, 1114 268, 1120 294" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1090 306 C1112 330, 1116 375, 1120 414" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1090 492 C1112 490, 1116 476, 1120 444" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1090 548 C1114 550, 1116 570, 1120 584" fill="none" stroke="#8fb6ff" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <text x="80" y="700" fill="#8fb6ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16">CLI and MCP share the same daemon, so snapshots, refs, and artifacts behave the same way everywhere.</text>
+</svg>
