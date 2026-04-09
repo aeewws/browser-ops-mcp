@@ -3,7 +3,6 @@
 `browser-ops-mcp` is a Playwright-powered CLI and MCP server for stable browser automation. It keeps a local daemon alive so agents can open a page, take a structured snapshot, interact through `snapshotId + ref`, extract content, and keep going without rebuilding state on every command.
 
 ![browser-ops architecture](docs/browser-ops-architecture.svg)
-![browser-ops demo](docs/assets/browser-ops-demo.png)
 
 ## Why Now
 

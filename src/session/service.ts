@@ -123,6 +123,9 @@ export class BrowserOpsService {
           const input = element as HTMLInputElement;
           if (input.type === "checkbox") return "checkbox";
           if (input.type === "radio") return "radio";
+          if (input.type === "button" || input.type === "submit" || input.type === "reset" || input.type === "image") {
+            return "button";
+          }
           return "textbox";
         }
         return tag;
@@ -347,7 +350,10 @@ export class BrowserOpsService {
 
   async screenshot(params: ScreenshotParams): Promise<ScreenshotResult> {
     const session = this.requireSession(params.sessionId);
-    const screenshotPath = params.path ?? path.resolve(process.cwd(), `browser-ops-${Date.now()}.png`);
+    const baseDir = params.cwd ? path.resolve(params.cwd) : process.cwd();
+    const screenshotPath = params.path
+      ? path.resolve(baseDir, params.path)
+      : path.resolve(baseDir, `browser-ops-${Date.now()}.png`);
     await mkdir(path.dirname(screenshotPath), { recursive: true });
     await session.page.screenshot({
       path: screenshotPath,

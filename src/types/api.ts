@@ -91,6 +91,7 @@ export interface ExtractResult {
 export interface ScreenshotParams {
   sessionId?: string;
   path?: string;
+  cwd?: string;
   fullPage?: boolean;
 }
 
