@@ -24,4 +24,5 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - run: chmod +x dist/cli/index.js && ./dist/cli/index.js --help
+      - run: node tests/mcp-smoke.mjs
       - run: npm test
