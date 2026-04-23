@@ -6,3 +6,12 @@ playwright-report/
 test-results/
 *.log
 browser-ops-*.png
+
+# OS / local files
+Thumbs.db
+.env
+.env.*
+tmp/
+temp/
+.turbo/
+.next/
