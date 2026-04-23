@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { access, mkdtemp } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { BrowserOpsService } from "../../src/session/service.js";
@@ -58,6 +60,19 @@ describe("BrowserOpsService", () => {
     expect(forms.forms?.some((field) => field.type === "button")).toBe(true);
   });
 
+  it("reports button-like input elements as buttons in snapshots", async () => {
+    const fixture = pathToFileURL(path.resolve("tests/fixtures/snapshot-input-types.html")).toString();
+    await service.open({ url: fixture, sessionId: "snapshot-input-types" });
+
+    const snapshot = await service.snapshot({ sessionId: "snapshot-input-types" });
+    const rolesById = new Map(snapshot.elements.map((element) => [element.name, element.role]));
+
+    expect(rolesById.get("button-input")).toBe("button");
+    expect(rolesById.get("submit-input")).toBe("button");
+    expect(rolesById.get("reset-input")).toBe("button");
+    expect(rolesById.get("image-input")).toBe("button");
+  });
+
   it("fails fast on invalid extract mode", async () => {
     const fixture = pathToFileURL(path.resolve("tests/fixtures/extract.html")).toString();
     await service.open({ url: fixture, sessionId: "invalid-mode" });
@@ -68,5 +83,20 @@ describe("BrowserOpsService", () => {
       code: "INVALID_EXTRACT_MODE",
       message: "Unsupported extract mode 'diagram'. Use text, markdown, links, or forms."
     });
+  });
+
+  it("resolves screenshot paths against the caller cwd", async () => {
+    const fixture = pathToFileURL(path.resolve("tests/fixtures/extract.html")).toString();
+    const callerCwd = await mkdtemp(path.join(os.tmpdir(), "browser-ops-cwd-"));
+    await service.open({ url: fixture, sessionId: "screenshot" });
+
+    const result = await service.screenshot({
+      sessionId: "screenshot",
+      path: "artifacts/screenshot.png",
+      cwd: callerCwd
+    });
+
+    expect(result.path).toBe(path.join(callerCwd, "artifacts", "screenshot.png"));
+    await access(result.path);
   });
 });

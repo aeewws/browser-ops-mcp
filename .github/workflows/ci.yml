@@ -7,6 +7,9 @@ on:
       - master
   pull_request:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,4 +26,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run typecheck
       - run: npm run build
+      - run: chmod +x dist/cli/index.js && ./dist/cli/index.js --help
+      - run: node tests/pack-smoke.mjs
+      - run: node tests/mcp-smoke.mjs
       - run: npm test

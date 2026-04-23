@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Browser Ops Snapshot Input Types Fixture</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+      }
+
+      form {
+        display: grid;
+        gap: 0.75rem;
+        max-width: 24rem;
+      }
+
+      input[type="image"] {
+        width: 96px;
+        height: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="fixture-form">
+      <input id="button-input" type="button" value="Button">
+      <input id="submit-input" type="submit" value="Submit">
+      <input id="reset-input" type="reset" value="Reset">
+      <input
+        id="image-input"
+        type="image"
+        alt="Image button"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='32'%3E%3Crect width='96' height='32' fill='%23d8e8ff'/%3E%3Ctext x='48' y='21' text-anchor='middle' font-family='Arial' font-size='12' fill='%23111'%3EImage%3C/text%3E%3C/svg%3E"
+      >
+    </form>
+  </body>
+</html>

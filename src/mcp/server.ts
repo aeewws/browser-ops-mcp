@@ -77,11 +77,12 @@ export async function startMcpServer(): Promise<void> {
       }),
       tool("take_screenshot", "Take a screenshot of the active page.", {
         type: "object",
-        properties: {
-          sessionId: { type: "string" },
-          path: { type: "string" },
-          fullPage: { type: "boolean" }
-        },
+          properties: {
+            sessionId: { type: "string" },
+            path: { type: "string" },
+            cwd: { type: "string" },
+            fullPage: { type: "boolean" }
+          },
         additionalProperties: false
       }),
       tool("close_session", "Close the active session.", {

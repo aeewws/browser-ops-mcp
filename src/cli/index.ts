@@ -109,9 +109,11 @@ program
   .option("--path <path>", "Output screenshot path")
   .option("--full-page", "Capture the full page", false)
   .action(withDaemon(async (options) => {
+    const cwd = process.cwd();
     printJson(await callDaemon("screenshot", {
       sessionId: options.session,
       path: options.path,
+      cwd,
       fullPage: options.fullPage
     }));
   }));

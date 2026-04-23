@@ -10,9 +10,6 @@ export default defineConfig([
     dts: true,
     format: ["esm"],
     sourcemap: true,
-    target: "node20",
-    banner: {
-      js: "#!/usr/bin/env node"
-    }
+    target: "node20"
   }
 ]);
