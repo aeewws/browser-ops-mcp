@@ -50,6 +50,15 @@ browser-ops --help
 
 ## Quickstart
 
+`browser-ops-mcp` is optimized for an agent loop where every browser action is
+grounded in a fresh, inspectable snapshot:
+
+1. open the target page;
+2. ask for an accessibility-first snapshot;
+3. act through `snapshotId + ref`;
+4. take another snapshot after every mutation;
+5. extract the smallest useful result.
+
 Open a page:
 
 ```bash
@@ -80,6 +89,47 @@ Run the MCP server:
 browser-ops serve-mcp
 ```
 
+### MCP client config
+
+For a local MCP client that accepts JSON-style server definitions, wire the
+server as a stdio command after building the package:
+
+```json
+{
+  "mcpServers": {
+    "browser-ops": {
+      "command": "node",
+      "args": ["./dist/cli/index.js", "serve-mcp"],
+      "cwd": "/absolute/path/to/browser-ops-mcp"
+    }
+  }
+}
+```
+
+If the package is installed globally, the command can be shorter:
+
+```json
+{
+  "mcpServers": {
+    "browser-ops": {
+      "command": "browser-ops",
+      "args": ["serve-mcp"]
+    }
+  }
+}
+```
+
+### Agent task patterns
+
+- **Web app QA:** open a local preview, snapshot controls, submit a form, wait
+  for a success marker, then extract text as evidence.
+- **Documentation checks:** visit generated docs, extract links, and fail the
+  workflow when required pages or anchors are missing.
+- **Legacy admin flows:** keep a session alive across multiple actions without
+  forcing the agent to rebuild browser state after every command.
+- **Human-readable handoff:** save a screenshot and the latest snapshot JSON so
+  a reviewer can see what the agent actually acted on.
+
 ## Commands
 
 - `open <url>`: open a URL in the default session
@@ -104,6 +154,10 @@ browser-ops serve-mcp
 - `extract_content`
 - `take_screenshot`
 - `close_session`
+
+The MCP tools intentionally mirror the CLI action layer. That keeps the daemon,
+snapshot invalidation rules, extraction modes, and screenshot behavior identical
+whether a human is debugging through the terminal or an agent is calling tools.
 
 ## Snapshot Contract
 
@@ -139,6 +193,21 @@ npm test
 ```
 
 The smoke test opens [`tests/fixtures/demo.html`](./tests/fixtures/demo.html) with Playwright, fills a form, submits it, and verifies the extracted text.
+
+If Playwright has been updated and the local browser cache is missing, the full
+test suite asks for a Chromium download. On small system drives, run
+`npm run typecheck` first and install the browser cache only when you need the
+end-to-end browser tests.
+
+## Release Notes
+
+### v0.1.0
+
+- Adds the first CLI and MCP server around the same Playwright-backed action
+  layer.
+- Defines the `snapshotId + ref` interaction contract for deterministic agent
+  browser actions.
+- Includes reproducible demo outputs, smoke tests, packaging checks, and CI.
 
 ## Limitations
 
